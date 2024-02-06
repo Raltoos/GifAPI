@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content {
+            background-image: url('https://i.pinimg.com/736x/17/8e/39/178e39bfa4290fec229ea6e0e12899fb.jpg');
+            width: 360px;
+            height: 640px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+
+            border: 2px solid black;
+        }
+
+        input,
+        label {
+            font-size: large;
+        }
+
+        button {
+            background-color: #2979fd;
+            color: white;
+            padding: 5px;
+            border: none;
+            font-size: large;
+        }
+
+        .image {
+            width: 100%;
+            height: 75%;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .inputBox {
+            width: 100%;
+            height: 25%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+
+            border-top: 2px solid black;
+        }
+
+        .input{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="image">
+        </div>
+
+        <div class="inputBox">
+            <div class="input">
+                <label for="search">Keyword: </label>
+                <input type="text" name="search" id="searchTerm" placeholder="Type Here">
+            </div>
+            <button>Search</button>
+        </div>
+    </div>
+
+    <script>
+        const img = document.querySelector('.image');
+        const button = document.querySelector('button');
+        const input = document.querySelector('input');
+
+        button.addEventListener('click', () => {
+            img.innerText = "";
+            const searchTerm = input.value;
+
+            fetch(`https://api.giphy.com/v1/gifs/translate?api_key=r7MfB3GrI4ZWn7xcSle4sOJ5djGu1AbO&s=${searchTerm}}`, { mode: 'cors' })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    if(response.data.length == 0){
+                        img.innerText = "Not a Valid Keyword!";
+                        return; 
+                    }
+                    img.style.backgroundImage = `url('${response.data.images.original.url}')`;
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        });
+    </script>
+</body>
+
+</html>
